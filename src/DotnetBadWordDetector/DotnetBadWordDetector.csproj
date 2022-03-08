@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+    <PackageId>AppLogger</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Felipe Luz</Authors>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>10.0</LangVersion>
         <AssemblyName>DotnetBadWordDetector</AssemblyName>
         <RootNamespace>DotnetBadWordDetector</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
   
     <ItemGroup>

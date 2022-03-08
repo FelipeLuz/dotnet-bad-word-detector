@@ -8,7 +8,6 @@ public class ProfanityDetector
     
     private const string MODELPATH = "DotnetBadWordDetector.Data.bad-words-model-english.zip";
     private PredictionEngine<BadWord, BadWordPrediction> _predictionEngine;
-    private string[] _names;
     
     public ProfanityDetector()
     {

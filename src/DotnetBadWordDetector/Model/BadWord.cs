@@ -1,23 +1,13 @@
 using Microsoft.ML.Data;
-
-namespace DotnetBadWordDetector.Model
+namespace DotnetBadWordDetector.Model;
+public class BadWord
 {
-    public class BadWord
-    {
-        [LoadColumn(0)]
-        public string Word;
+    public string Word { get; set; }
+}
+public class BadWordPrediction : BadWord
+{
+    [ColumnName("PredictedLabel")]
+    public bool Prediction { get; set; }
 
-        [LoadColumn(1), ColumnName("Label")]
-        public bool Value;
-    }
-
-    public class BadWordPrediction : BadWord
-    {
-        [ColumnName("PredictedLabel")]
-        public bool Prediction { get; set; }
-
-        public float Probability { get; set; }
-
-        public float Score { get; set; }
-    }
+    public float Probability { get; set; }
 }
