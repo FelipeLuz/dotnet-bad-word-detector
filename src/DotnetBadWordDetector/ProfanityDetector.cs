@@ -22,7 +22,7 @@ public class ProfanityDetector
         _predictionEngine = mlContext.Model.CreatePredictionEngine<BadWord, BadWordPrediction>(trainedModel);
     }
 
-    private Stream? GetModelStream()
+    private Stream GetModelStream()
     {
         var assembly = typeof(DotnetBadWordDetector.ProfanityDetector).Assembly;
         return assembly.GetManifestResourceStream(MODELPATH);
