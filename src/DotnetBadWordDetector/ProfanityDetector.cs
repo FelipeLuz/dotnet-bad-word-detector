@@ -4,27 +4,28 @@ using DotnetBadWordDetector.Model;
 namespace DotnetBadWordDetector;
 public class ProfanityDetector
 {
-    
-    private const string MODELPATH = "DotnetBadWordDetector.Data.bad-words-model-english.zip";
+    private const string MODELPATH_ENGLISH = "DotnetBadWordDetector.Data.bad-words-model-english.zip";
+    private const string MODELPATH_SPANISH = "DotnetBadWordDetector.Data.bad-words-model-spanish.zip";
     private PredictionEngine<BadWord, BadWordPrediction> _predictionEngine;
     
-    public ProfanityDetector()
+    public ProfanityDetector(Language language = Language.english)
     {
-        LoadTrainedModel();
+        LoadTrainedModel(language);
     }
 
-    private void LoadTrainedModel()
+    private void LoadTrainedModel(Language language)
     {   
-        DataViewSchema modelSchema;
         var mlContext = new MLContext();
-        var trainedModel = mlContext.Model.Load(GetModelStream(), out modelSchema);
+        var stream = GetModelStream(language);
+        var trainedModel = mlContext.Model.Load(stream, out _);
         _predictionEngine = mlContext.Model.CreatePredictionEngine<BadWord, BadWordPrediction>(trainedModel);
     }
 
-    private Stream GetModelStream()
+    private Stream GetModelStream(Language language)
     {
-        var assembly = typeof(DotnetBadWordDetector.ProfanityDetector).Assembly;
-        return assembly.GetManifestResourceStream(MODELPATH);
+        var assembly = typeof(ProfanityDetector).Assembly;
+        var path = language == Language.english ? MODELPATH_ENGLISH : MODELPATH_SPANISH;
+        return assembly.GetManifestResourceStream(path);
     }
 
     /// <summary>

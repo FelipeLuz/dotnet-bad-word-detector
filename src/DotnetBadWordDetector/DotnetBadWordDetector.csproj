@@ -2,12 +2,12 @@
 
     <PropertyGroup>
         <PackageId>DotnetBadWordDetector</PackageId>
-        <Version>1.0.1</Version>
+        <Version>2.0.0</Version>
         <Authors>Felipe Luz</Authors>
         <PackageDescription>Dotnet Bad Word Detector</PackageDescription>
         <RepositoryUrl>https://github.com/FelipeLuz/dotnet-bad-word-detector</RepositoryUrl>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <LangVersion>10.0</LangVersion>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>12.0</LangVersion>
         <AssemblyName>DotnetBadWordDetector</AssemblyName>
         <RootNamespace>DotnetBadWordDetector</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
