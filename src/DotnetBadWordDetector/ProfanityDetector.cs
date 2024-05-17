@@ -4,27 +4,39 @@ using DotnetBadWordDetector.Model;
 namespace DotnetBadWordDetector;
 public class ProfanityDetector
 {
-    private const string MODELPATH_ENGLISH = "DotnetBadWordDetector.Data.bad-words-model-english.zip";
-    private const string MODELPATH_SPANISH = "DotnetBadWordDetector.Data.bad-words-model-spanish.zip";
-    private PredictionEngine<BadWord, BadWordPrediction> _predictionEngine;
+    const string MODEL_BASE_PATH = "DotnetBadWordDetector.Data.bad-words-model-{LOCALE}.zip";
+    const string TAG = "{LOCALE}";
+    List<PredictionEngine<BadWord, BadWordPrediction>> _engines;
     
-    public ProfanityDetector(Language language = Language.english)
+    public ProfanityDetector(bool allLocales = false)
     {
-        LoadTrainedModel(language);
+
+        Locales[] locales = allLocales ? [Locales.ENGLISH, Locales.SPANISH, Locales.PORTUGUESE]
+                                        : [Locales.ENGLISH];
+        LoadTrainedModel(locales);
     }
 
-    private void LoadTrainedModel(Language language)
+    public ProfanityDetector(params Locales[] locales)
+    {
+        LoadTrainedModel(locales);
+    }
+
+    private void LoadTrainedModel(Locales[] locales)
     {   
         var mlContext = new MLContext();
-        var stream = GetModelStream(language);
-        var trainedModel = mlContext.Model.Load(stream, out _);
-        _predictionEngine = mlContext.Model.CreatePredictionEngine<BadWord, BadWordPrediction>(trainedModel);
+        foreach (var locale in locales)
+        {
+            var path = MODEL_BASE_PATH.Replace(TAG, locale.GetDescription());
+            var stream = GetModelStream(path);
+            var trainedModel = mlContext.Model.Load(stream, out _);
+            var engine = mlContext.Model.CreatePredictionEngine<BadWord, BadWordPrediction>(trainedModel);
+            _engines.Add(engine);
+        }
     }
 
-    private Stream GetModelStream(Language language)
+    private Stream GetModelStream(string path)
     {
         var assembly = typeof(ProfanityDetector).Assembly;
-        var path = language == Language.english ? MODELPATH_ENGLISH : MODELPATH_SPANISH;
         return assembly.GetManifestResourceStream(path);
     }
 
@@ -36,7 +48,13 @@ public class ProfanityDetector
     public bool IsProfane(string word)
     {
         var obj = new BadWord { Word = word };
-        return _predictionEngine.Predict(obj).Prediction;
+        foreach (var engine in _engines)
+        {
+            if (!engine.Predict(obj).Prediction)
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -47,6 +65,14 @@ public class ProfanityDetector
     public float GetProfanityProbability(string word)
     {
         var obj = new BadWord { Word = word };
-        return _predictionEngine.Predict(obj).Probability;
+        var biggestProb = 0f;
+
+        foreach (var engine in _engines)
+        {
+            var currProb = engine.Predict(obj).Probability;
+            biggestProb = Math.Max(currProb, biggestProb);
+        }
+
+        return biggestProb;
     }
 }
