@@ -1,4 +1,5 @@
-# .NET Bad Word Detector and Filter
+# .NET Bad Word Detector and Filter 
+[![NuGet](https://img.shields.io/nuget/v/DotnetBadWordDetector.svg)](https://www.nuget.org/packages/DotnetBadWordDetector/)
 
 This is a fast and robust library that detects offensive language within text strings. It currently supports English, Portuguese, and Spanish languages.
 
