@@ -19,5 +19,8 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Data/bad-words-model-english.zip" />
+        <EmbeddedResource Include="Data/bad-words-model-portuguese.zip" />
+        <EmbeddedResource Include="Data/bad-words-model-russian_cyrillic.zip" />
+        <EmbeddedResource Include="Data/bad-words-model-spanish.zip" />
     </ItemGroup>
 </Project>
