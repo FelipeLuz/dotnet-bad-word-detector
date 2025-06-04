@@ -1,4 +1,4 @@
-# .NET Bad Word Detector
+# .NET Bad Word Detector and Filter
 
 This is a fast and robust library that detects offensive language within text strings. It currently supports English, Portuguese, and Spanish languages.
 
